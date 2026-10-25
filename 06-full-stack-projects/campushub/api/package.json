@@ -1,0 +1,14 @@
+{
+  "name": "@mern/campushub-api",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "dependencies": {
+    "express": "5.3.0",
+    "mongoose": "9.11.4",
+    "zod": "^4.0.0",
+    "cookie-parser": "^1.4.7",
+    "helmet": "^8.0.0",
+    "express-rate-limit": "^8.0.0"
+  }
+}

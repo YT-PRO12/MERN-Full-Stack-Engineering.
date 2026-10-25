@@ -1,0 +1,14 @@
+services:
+  mongo:
+    image: mongo:8.0
+    ports:
+      - '127.0.0.1:27017:27017'
+    volumes:
+      - campus-data:/data/db
+    healthcheck:
+      test: ['CMD', 'mongosh', '--quiet', '--eval', 'db.adminCommand({ping:1}).ok']
+      interval: 5s
+      timeout: 3s
+      retries: 10
+volumes:
+  campus-data:
