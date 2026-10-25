@@ -1,5 +1,7 @@
 # MERN Full Stack Engineering
 
+[![Verify MERN projects](https://github.com/YT-PRO12/MERN-Full-Stack-Engineering./actions/workflows/verify.yml/badge.svg)](https://github.com/YT-PRO12/MERN-Full-Stack-Engineering./actions/workflows/verify.yml)
+
 React exercises, backend labs, and a complete listing-management application. Start small, follow a request through the stack, then change something and test it.
 
 **React · Node.js · Express · MongoDB · Mongoose · JavaScript**
