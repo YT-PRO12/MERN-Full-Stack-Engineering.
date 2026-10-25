@@ -1,0 +1,10 @@
+{
+  "name": "@mern/express-lab",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "dependencies": {
+    "express": "5.3.0",
+    "zod": "^4.0.0"
+  }
+}

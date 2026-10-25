@@ -1,0 +1,9 @@
+{
+  "name": "@mern/mongodb-lab",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "dependencies": {
+    "mongoose": "9.11.4"
+  }
+}
