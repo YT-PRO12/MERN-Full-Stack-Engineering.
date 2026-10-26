@@ -24,13 +24,20 @@ export const listingUpdate = listingFields
   })
   .strict()
   .refine((value) => Object.keys(value).length > 1, 'Supply at least one changed field');
+const queryInteger = (max, fallback) =>
+  z
+    .string()
+    .regex(/^[1-9]\d*$/)
+    .transform(Number)
+    .pipe(z.number().int().max(max))
+    .default(fallback);
 export const listingQuery = z
   .object({
     q: z.string().trim().max(80).default(''),
     category: z.enum(categories).optional(),
     status: z.enum(states).optional(),
-    page: z.coerce.number().int().min(1).max(1000).default(1),
-    limit: z.coerce.number().int().min(1).max(24).default(9),
+    page: queryInteger(1000, 1),
+    limit: queryInteger(24, 9),
   })
   .strict();
 export const objectId = z.string().regex(/^[a-f0-9]{24}$/i, 'Invalid listing id');
