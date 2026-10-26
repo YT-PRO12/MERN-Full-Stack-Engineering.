@@ -10,6 +10,12 @@ export async function hashPassword(password) {
   return `${salt}:${key.toString('hex')}`;
 }
 export async function checkPassword(password, stored) {
+  if (
+    typeof password !== 'string' ||
+    typeof stored !== 'string' ||
+    !/^[a-f0-9]{32}:[a-f0-9]{128}(?![\s\S])/.test(stored)
+  )
+    return false;
   const [salt, encoded] = stored.split(':');
   const key = await derive(password, salt, 64, { N: 32768, r: 8, p: 1, maxmem: 64 * 1024 * 1024 });
   const expected = Buffer.from(encoded, 'hex');
@@ -24,9 +30,13 @@ export function publicUser(user) {
 export function cookieOptions(production) {
   return { httpOnly: true, secure: production, sameSite: 'lax', path: '/api' };
 }
+export function sessionToken(cookies) {
+  const token = cookies?.[cookieName];
+  return typeof token === 'string' && /^[a-f0-9]{64}(?![\s\S])/.test(token) ? token : null;
+}
 export async function createSession(req, res, user, production) {
-  if (req.cookies[cookieName])
-    await Session.deleteOne({ tokenHash: tokenHash(req.cookies[cookieName]) });
+  const previous = sessionToken(req.cookies);
+  if (previous) await Session.deleteOne({ tokenHash: tokenHash(previous) });
   const token = randomBytes(32).toString('hex');
   await Session.create({
     tokenHash: tokenHash(token),
@@ -36,8 +46,8 @@ export async function createSession(req, res, user, production) {
   res.cookie(cookieName, token, { ...cookieOptions(production), maxAge: duration });
 }
 export async function requireUser(req, res, next) {
-  const token = req.cookies[cookieName];
-  if (!token || !/^[a-f0-9]{64}$/.test(token))
+  const token = sessionToken(req.cookies);
+  if (!token)
     return res
       .status(401)
       .json({ error: { code: 'UNAUTHENTICATED', message: 'Please sign in to continue.' } });
