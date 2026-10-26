@@ -3,10 +3,21 @@ import { fileURLToPath } from 'node:url';
 export function summarize(items) {
   if (!Array.isArray(items)) throw new TypeError('Inventory must be an array');
   return items.reduce((summary, item) => {
-    if (typeof item.category !== 'string' || !Number.isInteger(item.price) || item.price < 0)
+    if (
+      !item ||
+      typeof item !== 'object' ||
+      Array.isArray(item) ||
+      typeof item.category !== 'string' ||
+      !item.category.trim() ||
+      !Number.isSafeInteger(item.price) ||
+      item.price < 0
+    )
       throw new TypeError('Invalid inventory item');
     const current = summary.get(item.category) || { count: 0, value: 0 };
-    summary.set(item.category, { count: current.count + 1, value: current.value + item.price });
+    const value = current.value + item.price;
+    if (!Number.isSafeInteger(value))
+      throw new RangeError('Inventory total exceeds safe integer precision');
+    summary.set(item.category, { count: current.count + 1, value });
     return summary;
   }, new Map());
 }

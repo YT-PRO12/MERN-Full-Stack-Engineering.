@@ -18,3 +18,26 @@ test('rejects invalid prices and reads the JSON fixture asynchronously', async (
     code: 'ENOENT',
   });
 });
+
+test('rejects malformed rows and unsafe totals instead of silently rounding money', () => {
+  for (const item of [
+    null,
+    [],
+    1,
+    { category: ' ', price: 1 },
+    { category: 'books', price: Number.MAX_SAFE_INTEGER + 1 },
+  ])
+    assert.throws(() => summarize([item]), { name: 'TypeError' });
+  assert.throws(
+    () =>
+      summarize([
+        { category: 'books', price: Number.MAX_SAFE_INTEGER },
+        { category: 'books', price: 1 },
+      ]),
+    { name: 'RangeError' },
+  );
+  assert.equal(
+    summarize([{ category: 'books', price: Number.MAX_SAFE_INTEGER }]).get('books').value,
+    Number.MAX_SAFE_INTEGER,
+  );
+});
