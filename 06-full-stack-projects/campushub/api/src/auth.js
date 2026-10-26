@@ -10,6 +10,12 @@ export async function hashPassword(password) {
   return `${salt}:${key.toString('hex')}`;
 }
 export async function checkPassword(password, stored) {
+  if (
+    typeof password !== 'string' ||
+    typeof stored !== 'string' ||
+    !/^[a-f0-9]{32}:[a-f0-9]{128}$/.test(stored)
+  )
+    return false;
   const [salt, encoded] = stored.split(':');
   const key = await derive(password, salt, 64, { N: 32768, r: 8, p: 1, maxmem: 64 * 1024 * 1024 });
   const expected = Buffer.from(encoded, 'hex');
