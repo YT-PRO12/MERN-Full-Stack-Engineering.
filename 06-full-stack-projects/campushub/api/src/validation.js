@@ -27,7 +27,7 @@ export const listingUpdate = listingFields
 const queryInteger = (max, fallback) =>
   z
     .string()
-    .regex(/^[1-9]\d*$/)
+    .regex(/^[1-9]\d*(?![\s\S])/)
     .transform(Number)
     .pipe(z.number().int().max(max))
     .default(fallback);
@@ -40,7 +40,7 @@ export const listingQuery = z
     limit: queryInteger(24, 9),
   })
   .strict();
-export const objectId = z.string().regex(/^[a-f0-9]{24}$/i, 'Invalid listing id');
+export const objectId = z.string().regex(/^[a-f0-9]{24}(?![\s\S])/i, 'Invalid listing id');
 export function parse(schema, value) {
   return schema.parse(value);
 }

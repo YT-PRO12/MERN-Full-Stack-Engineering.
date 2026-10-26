@@ -13,7 +13,7 @@ export async function checkPassword(password, stored) {
   if (
     typeof password !== 'string' ||
     typeof stored !== 'string' ||
-    !/^[a-f0-9]{32}:[a-f0-9]{128}$/.test(stored)
+    !/^[a-f0-9]{32}:[a-f0-9]{128}(?![\s\S])/.test(stored)
   )
     return false;
   const [salt, encoded] = stored.split(':');
@@ -32,7 +32,7 @@ export function cookieOptions(production) {
 }
 export function sessionToken(cookies) {
   const token = cookies?.[cookieName];
-  return typeof token === 'string' && /^[a-f0-9]{64}$/.test(token) ? token : null;
+  return typeof token === 'string' && /^[a-f0-9]{64}(?![\s\S])/.test(token) ? token : null;
 }
 export async function createSession(req, res, user, production) {
   const previous = sessionToken(req.cookies);
