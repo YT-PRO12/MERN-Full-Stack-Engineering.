@@ -23,6 +23,7 @@ import {
   cookieName,
   cookieOptions,
   tokenHash,
+  sessionToken,
 } from './auth.js';
 import { HttpError, publicListing, findListings, updateListing } from './listings.js';
 export function createApp({
@@ -92,8 +93,8 @@ export function createApp({
     res.json({ user: publicUser(user) });
   });
   app.post('/api/auth/logout', async (req, res) => {
-    if (req.cookies[cookieName])
-      await Session.deleteOne({ tokenHash: tokenHash(req.cookies[cookieName]) });
+    const token = sessionToken(req.cookies);
+    if (token) await Session.deleteOne({ tokenHash: tokenHash(token) });
     res.clearCookie(cookieName, cookieOptions(production));
     res.sendStatus(204);
   });
