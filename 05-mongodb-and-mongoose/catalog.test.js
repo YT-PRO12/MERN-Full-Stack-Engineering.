@@ -28,3 +28,12 @@ test('rejects negative stock at the model boundary', async () => {
     name: 'ValidationError',
   });
 });
+
+test('existing nonempty string SKUs remain reservable without operator coercion', async () => {
+  for (const sku of ['   ', 'x'.repeat(121)]) {
+    await StockItem.create({ sku, category: 'books', stock: 1 });
+    const item = await reserveOne(sku);
+    assert.equal(item.sku, sku);
+    assert.equal(item.stock, 0);
+  }
+});

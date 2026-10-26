@@ -6,8 +6,8 @@ const stockSchema = new mongoose.Schema({
 });
 export const StockItem = mongoose.model('StockItem', stockSchema);
 export async function reserveOne(sku) {
-  if (typeof sku !== 'string' || !sku.trim() || sku.length > 120)
-    throw new TypeError('SKU must be a nonempty string of at most 120 characters');
+  if (typeof sku !== 'string' || sku.length === 0)
+    throw new TypeError('SKU must be a nonempty string');
   // The condition and decrement are one atomic operation. A read followed by save would race.
   return StockItem.findOneAndUpdate(
     { sku, stock: { $gt: 0 } },
