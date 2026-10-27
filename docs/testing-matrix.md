@@ -2,15 +2,25 @@
 
 This map describes what the checked-in suites exercise, not an assertion that every test passes on every machine.
 
-| Area | Main checks | Command |
-| --- | --- | --- |
-| Inventory CLI | Pure grouping, safe integer totals, input isolation | `npm run test:node` |
-| Products API | Schema boundaries, creation, isolation, HTTP errors | `npm run test:node` |
-| MongoDB stock lab | Unique indexes, positive-stock atomic reservation | `npm run test:node` |
-| CampusHub API | Sessions, validation, ownership, state transitions, races | `npm run test:node` |
-| React projects | Forms, effects, routes and navigation | `npm run test:react` |
-| CampusHub web | Presentation state, pagination and listing cards | `npm run test:react` |
-| End-to-end | Browser flows against an isolated database | `npm run test:e2e` |
+## Node.js checks
+
+- **Inventory CLI:** Pure grouping, safe integer totals, input isolation.
+- **Products API:** Schema boundaries, creation, isolation, HTTP errors.
+- **MongoDB stock lab:** Unique indexes, positive-stock atomic reservation.
+- **CampusHub API:** Sessions, validation, ownership, state transitions, races.
+
+Run these checks with `npm run test:node`.
+
+## React checks
+
+- **React projects:** Forms, effects, routes and navigation.
+- **CampusHub web:** Presentation state, pagination and listing cards.
+
+Run these checks with `npm run test:react`.
+
+## Browser checks
+
+End-to-end tests cover browser flows against an isolated database. Run them with `npm run test:e2e`.
 
 ## Running checks
 
