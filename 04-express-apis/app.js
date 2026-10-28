@@ -24,6 +24,8 @@ export function createProductApp() {
   app.use((error, _req, res, _next) => {
     if (error instanceof z.ZodError || error.type === 'entity.parse.failed')
       return res.status(400).json({ error: 'Supply a name and a nonnegative integer price' });
+    if (error.type === 'charset.unsupported' || error.type === 'encoding.unsupported')
+      return res.status(415).json({ error: 'Request encoding is not supported' });
     if (error.type === 'entity.too.large')
       return res.status(413).json({ error: 'Request body is too large' });
     res.status(500).json({ error: 'Internal server error' });
