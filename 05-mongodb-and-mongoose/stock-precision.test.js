@@ -2,7 +2,7 @@ import test, { before, after } from 'node:test';
 import assert from 'node:assert/strict';
 import mongoose from 'mongoose';
 import { MongoMemoryServer } from 'mongodb-memory-server';
-import { StockItem, reserveOne } from './catalog.js';
+import { StockItem, reserveOne, stockByCategory } from './catalog.js';
 let db;
 before(async () => {
   db = await MongoMemoryServer.create({ instance: { args: ['--nounixsocket'] } });
@@ -31,4 +31,16 @@ test('reservations do not decrement malformed legacy stock quantities', async ()
     assert.equal(await reserveOne(sku), null);
     assert.equal((await StockItem.collection.findOne({ sku })).stock, stock);
   }
+});
+
+test('category totals exclude unreservable legacy quantities', async () => {
+  await StockItem.deleteMany({});
+  await StockItem.collection.insertMany(
+    [0, 4, 0.5, 1.5, -1, 2 ** 54, null, 'invalid'].map((stock, i) => ({
+      sku: 'total-' + i,
+      category: 'books',
+      stock,
+    })),
+  );
+  assert.deepEqual(await stockByCategory(), [{ _id: 'books', units: 4 }]);
 });

@@ -21,6 +21,12 @@ export async function reserveOne(sku) {
 }
 export function stockByCategory() {
   return StockItem.aggregate([
+    {
+      $match: {
+        stock: { $gte: 0, $lte: Number.MAX_SAFE_INTEGER },
+        $expr: { $cond: [{ $isNumber: '$stock' }, { $eq: [{ $mod: ['$stock', 1] }, 0] }, false] },
+      },
+    },
     { $group: { _id: '$category', units: { $sum: '$stock' } } },
     { $sort: { _id: 1 } },
   ]);
