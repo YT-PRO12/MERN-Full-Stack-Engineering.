@@ -4,15 +4,15 @@ This repository is an engineering showcase, not a claim of production deployment
 
 ## Automated local gates
 
-| Gate | Command | What it covers |
-| --- | --- | --- |
-| Dependency install | `npm ci` | Lockfile-resolved workspace dependencies |
-| Lint | `npm run lint` | Static JavaScript, React and hooks checks |
-| Format | `npm run format:check` | Formatting drift |
-| Node tests | `npm run test:node` | API, inventory, session and database contracts |
-| React tests | `npm run test:react` | Component behavior and error paths |
-| Build | `npm run build` | Vite application bundles |
-| Browser | `npm run test:e2e` | End-to-end workflows in disposable local demo |
+| Gate               | Command                | What it covers                                 |
+| ------------------ | ---------------------- | ---------------------------------------------- |
+| Dependency install | `npm ci`               | Lockfile-resolved workspace dependencies       |
+| Lint               | `npm run lint`         | Static JavaScript, React and hooks checks      |
+| Format             | `npm run format:check` | Formatting drift                               |
+| Node tests         | `npm run test:node`    | API, inventory, session and database contracts |
+| React tests        | `npm run test:react`   | Component behavior and error paths             |
+| Build              | `npm run build`        | Vite application bundles                       |
+| Browser            | `npm run test:e2e`     | End-to-end workflows in disposable local demo  |
 
 Run with the Node major version specified in `package.json`. The browser test requires the documented Playwright Chromium install. MongoDB test infrastructure may download an isolated binary on first use.
 
