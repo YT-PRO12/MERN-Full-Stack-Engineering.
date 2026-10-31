@@ -4,10 +4,11 @@ import { summarize } from './inventory.js';
 
 test('inventory aggregation rejects sums beyond safe integer precision', () => {
   assert.throws(
-    () => summarize([
-      { category: 'books', price: Number.MAX_SAFE_INTEGER },
-      { category: 'books', price: 1 },
-    ]),
+    () =>
+      summarize([
+        { category: 'books', price: Number.MAX_SAFE_INTEGER },
+        { category: 'books', price: 1 },
+      ]),
     RangeError,
   );
 });
