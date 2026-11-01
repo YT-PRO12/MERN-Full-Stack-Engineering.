@@ -6,11 +6,23 @@ export async function api(path, { body, ...options } = {}) {
     body: body === undefined ? undefined : JSON.stringify(body),
   });
   if (response.status === 204) return null;
-  const data = await response.json();
+  let data;
+  try {
+    data = await response.json();
+  } catch {
+    const error = new Error('The server returned an unreadable response. Try again.');
+    error.status = response.ok ? 502 : response.status;
+    throw error;
+  }
   if (!response.ok) {
     const error = new Error(
-      data.error?.fields?.map((f) => `${f.path}: ${f.message}`).join(' · ') ||
-        data.error?.message ||
+      (Array.isArray(data?.error?.fields)
+        ? data.error.fields
+            .filter((f) => typeof f?.path === 'string' && typeof f?.message === 'string')
+            .map((f) => `${f.path}: ${f.message}`)
+            .join(' · ')
+        : '') ||
+        (typeof data?.error?.message === 'string' ? data.error.message : '') ||
         'Request failed.',
     );
     error.status = response.status;

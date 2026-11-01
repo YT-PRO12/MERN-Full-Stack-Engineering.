@@ -15,6 +15,7 @@ export default function useCurrency(currency) {
         const result = await response.json();
         if (
           result.result !== 'success' ||
+          result.base_code !== currency ||
           !result.rates ||
           !currencies.every((code) => Number.isFinite(result.rates[code]) && result.rates[code] > 0)
         )
