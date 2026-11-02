@@ -7,7 +7,8 @@ test('product catalogs are independent for separate app instances', async () => 
   const first = createProductApp();
   const second = createProductApp();
   const created = await request(first).post('/api/products').send({
-    name: 'Notebook', price: 200,
+    name: 'Notebook',
+    price: 200,
   });
   assert.equal(created.status, 201);
   const response = await request(second).get('/api/products');
