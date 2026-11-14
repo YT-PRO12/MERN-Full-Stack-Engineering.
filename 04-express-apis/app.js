@@ -7,6 +7,7 @@ const product = z
   .strict();
 export function createProductApp() {
   const app = express();
+  app.disable('x-powered-by');
   const products = new Map();
   app.use(express.json({ limit: '8kb' }));
   app.get('/api/products', (_req, res) => res.json({ items: [...products.values()] }));
