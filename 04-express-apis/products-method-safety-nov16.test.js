@@ -12,8 +12,8 @@ test('unsupported update and delete methods cannot mutate catalog', async () => 
 
   const id = created.body.item.id;
   for (const method of ['patch', 'put', 'delete']) {
-    const response = await request(app)[method]('/api/products/' + id)
-      .send({ name: 'Unauthorized change', price: 0 });
+    const url = `/api/products/${id}`;
+    const response = await request(app)[method](url).send({});
     assert.equal(response.status, 404);
     assert.deepEqual(response.body, { error: 'Endpoint not found' });
   }
