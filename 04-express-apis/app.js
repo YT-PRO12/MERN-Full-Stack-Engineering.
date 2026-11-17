@@ -8,6 +8,10 @@ const product = z
 export function createProductApp() {
   const app = express();
   app.disable('x-powered-by');
+  app.use((_req, res, next) => {
+    res.setHeader('Cache-Control', 'no-store');
+    next();
+  });
   const products = new Map();
   app.use(express.json({ limit: '8kb' }));
   app.get('/api/products', (_req, res) => res.json({ items: [...products.values()] }));
