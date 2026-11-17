@@ -5,9 +5,10 @@ import { createProductApp } from './app.js';
 
 test('product responses disable caching without changing response data', async () => {
   const app = createProductApp();
-  const created = await request(app)
-    .post('/api/products')
-    .send({ name: 'Synthetic Notebook', price: 250 });
+  const created = await request(app).post('/api/products').send({
+    name: 'Synthetic Notebook',
+    price: 250,
+  });
   const list = await request(app).get('/api/products');
   const detail = await request(app).get(`/api/products/${created.body.item.id}`);
 
@@ -26,9 +27,7 @@ test('product responses disable caching without changing response data', async (
 test('missing routes and invalid inputs are not cached', async () => {
   const app = createProductApp();
   const missing = await request(app).get('/api/unknown');
-  const invalid = await request(app)
-    .post('/api/products')
-    .send({ name: '', price: -1 });
+  const invalid = await request(app).post('/api/products').send({ name: '', price: -1 });
 
   assert.equal(missing.status, 404);
   assert.equal(invalid.status, 400);
