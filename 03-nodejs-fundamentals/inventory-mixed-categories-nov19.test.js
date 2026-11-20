@@ -9,11 +9,14 @@ test('aggregates repeated categories and retains exact category identity', () =>
     { category: 'books', price: 2 },
     { category: 'hardware', price: 0 },
   ];
-  assert.deepEqual([...summarize(items)], [
-    ['books', { count: 2, value: 7 }],
-    ['Books', { count: 1, value: 7 }],
-    ['hardware', { count: 1, value: 0 }],
-  ]);
+  assert.deepEqual(
+    [...summarize(items)],
+    [
+      ['books', { count: 2, value: 7 }],
+      ['Books', { count: 1, value: 7 }],
+      ['hardware', { count: 1, value: 0 }],
+    ],
+  );
   assert.equal(items[0].price, 5);
 });
 
