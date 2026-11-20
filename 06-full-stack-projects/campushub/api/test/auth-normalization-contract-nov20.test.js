@@ -27,5 +27,8 @@ test('registration refuses role injection, weak password and missing identity', 
   assert.equal(registration.safeParse({ ...valid, role: 'admin' }).success, false);
   assert.equal(registration.safeParse({ ...valid, password: 'short' }).success, false);
   assert.equal(registration.safeParse({ ...valid, name: ' ' }).success, false);
-  assert.equal(login.safeParse({ email: valid.email, password: valid.password, role: 'admin' }).success, false);
+  assert.equal(
+    login.safeParse({ email: valid.email, password: valid.password, role: 'admin' }).success,
+    false,
+  );
 });
