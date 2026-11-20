@@ -12,7 +12,10 @@ test('versioned listing changes accept a bounded state transition', () => {
 
 test('version must be a nonnegative integer and updates must change a field', () => {
   for (const version of [-1, 1.5, '1', NaN, null]) {
-    assert.equal(listingUpdate.safeParse({ version, title: 'Updated textbook title' }).success, false);
+    assert.equal(
+      listingUpdate.safeParse({ version, title: 'Updated textbook title' }).success,
+      false,
+    );
   }
   assert.equal(listingUpdate.safeParse({ version: 0 }).success, false);
   assert.equal(listingUpdate.safeParse({ title: 'Updated textbook title' }).success, false);
