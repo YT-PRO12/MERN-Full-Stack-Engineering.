@@ -142,6 +142,10 @@ export function createApp({
       return res
         .status(400)
         .json({ error: { code: 'INVALID_JSON', message: 'Request body must be valid JSON.' } });
+    if (error.type === 'charset.unsupported' || error.type === 'encoding.unsupported')
+      return res.status(415).json({
+        error: { code: 'UNSUPPORTED_ENCODING', message: 'Request encoding is not supported.' },
+      });
     if (error.type === 'entity.too.large')
       return res
         .status(413)

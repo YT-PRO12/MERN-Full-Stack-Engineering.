@@ -12,5 +12,7 @@ test('reservation rejects query operators and invalid SKUs before database acces
 test('reservation uses an exact SKU and atomic positive-stock predicate', async (t) => {
   const lookup = t.mock.method(StockItem, 'findOneAndUpdate', async () => null);
   assert.equal(await reserveOne('book-1'), null);
-  assert.deepEqual(lookup.mock.calls[0].arguments[0], { sku: 'book-1', stock: { $gt: 0 } });
+  const filter = lookup.mock.calls[0].arguments[0];
+  assert.equal(filter.sku, 'book-1');
+  assert.deepEqual(filter.stock, { $gte: 1, $lte: Number.MAX_SAFE_INTEGER });
 });

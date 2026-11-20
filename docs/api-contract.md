@@ -37,3 +37,7 @@ Example create body:
   "location": "Library entrance"
 }
 ```
+
+### Unsupported request encodings
+
+CampusHub returns HTTP `415` with error code `UNSUPPORTED_ENCODING` when a request uses an unsupported charset or content encoding. Clients should send UTF-8 JSON with a supported content encoding; retrying the same unsupported encoding will not succeed. The standalone Express API lab also returns HTTP `415` for these parser failures using its existing error envelope.
