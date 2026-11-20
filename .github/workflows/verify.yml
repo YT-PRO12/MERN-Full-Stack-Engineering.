@@ -19,7 +19,14 @@ jobs:
           node-version: '24'
           cache: npm
       - run: npm ci
-      - run: npm run format:check
+      - name: Check formatting and show a corrective diff on failure
+        shell: bash
+        run: |
+          if ! npm run format:check; then
+            npx prettier --write .
+            git diff -- .
+            exit 1
+          fi
       - run: npm run lint
       - run: npm test
       - run: npm run build
