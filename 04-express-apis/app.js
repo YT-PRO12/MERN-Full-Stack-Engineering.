@@ -3,7 +3,15 @@ import { z } from 'zod';
 import { randomUUID } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 const product = z
-  .object({ name: z.string().trim().min(1).max(80), price: z.number().int().min(0).max(100000) })
+  .object({
+    name: z
+      .string()
+      .trim()
+      .min(1)
+      .max(80)
+      .regex(/^[^\x00-\x1f\x7f]+$/),
+    price: z.number().int().min(0).max(100000),
+  })
   .strict();
 export function createProductApp() {
   const app = express();
