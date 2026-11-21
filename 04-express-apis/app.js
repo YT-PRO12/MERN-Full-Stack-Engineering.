@@ -9,7 +9,12 @@ const product = z
       .trim()
       .min(1)
       .max(80)
-      .regex(/^[^\x00-\x1f\x7f]+$/),
+      .refine((name) =>
+        [...name].every((character) => {
+          const code = character.charCodeAt(0);
+          return code >= 32 && code !== 127;
+        }),
+      ),
     price: z.number().int().min(0).max(100000),
   })
   .strict();
