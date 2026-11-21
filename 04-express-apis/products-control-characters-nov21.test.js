@@ -22,9 +22,7 @@ test('rejects embedded control characters without mutating the catalog', async (
 test('retains legitimate Unicode and punctuation in display names', async () => {
   const app = createProductApp();
   const name = 'Café & Notebook 📗';
-  const created = await request(app)
-    .post('/api/products')
-    .send({ name, price: 250 });
+  const created = await request(app).post('/api/products').send({ name, price: 250 });
   assert.equal(created.status, 201);
   assert.equal(created.body.item.name, name);
   assert.equal(created.body.item.price, 250);
