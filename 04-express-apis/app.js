@@ -9,12 +9,7 @@ const product = z
       .refine((name) =>
         [...name].every((character) => {
           const code = character.codePointAt(0);
-          return (
-            code >= 32 &&
-            !(code >= 127 && code <= 159) &&
-            code !== 0x2028 &&
-            code !== 0x2029
-          );
+          return code >= 32 && !(code >= 127 && code <= 159) && code !== 0x2028 && code !== 0x2029;
         }),
       )
       .pipe(z.string().trim().min(1).max(80)),
